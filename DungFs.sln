@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DungFs", "DungFs\DungFs.fsproj", "{88A6D88F-C527-4411-A5B0-26FF27020A27}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TestDungFs", "TestDungFs\TestDungFs.fsproj", "{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88A6D88F-C527-4411-A5B0-26FF27020A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A6D88F-C527-4411-A5B0-26FF27020A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A6D88F-C527-4411-A5B0-26FF27020A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A6D88F-C527-4411-A5B0-26FF27020A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
