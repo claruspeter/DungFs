@@ -25,13 +25,13 @@ let ``A person starts with 0 gold`` () =
 [<Fact>]
 let ``When a person picks up gold it is added to their purse`` () =
   let person = Person.empty
-  let richPerson = person |> pickupGold 42 
+  let richPerson = person |> increaseGold 42 
   richPerson.gold |> should equal 42
 
 [<Fact>]
 let ``A person can pick up multiple amounts of gold`` () =
   let person = Person.empty
-  let richPerson = person |> pickupGold 42 |> pickupGold 69 
+  let richPerson = person |> increaseGold 42 |> increaseGold 69 
   richPerson.gold |> should equal 111
 
 [<Fact>]
