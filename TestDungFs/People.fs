@@ -25,30 +25,30 @@ let ``A person starts with 0 gold`` () =
 [<Fact>]
 let ``When a person picks up gold it is added to their purse`` () =
   let person = Person.empty
-  let richPerson = person |> increaseGold 42 
+  let richPerson = person |> Play.increaseGold 42 
   richPerson.gold |> should equal 42
 
 [<Fact>]
 let ``A person can pick up multiple amounts of gold`` () =
   let person = Person.empty
-  let richPerson = person |> increaseGold 42 |> increaseGold 69 
+  let richPerson = person |> Play.increaseGold 42 |> Play.increaseGold 69 
   richPerson.gold |> should equal 111
 
 [<Fact>]
 let ``When a person can be damaged their health decreases`` () =
   let person = Person.empty
-  let hurtPerson = person |> takeDamage 42 
+  let hurtPerson = person |> Play.takeDamage 42 
   hurtPerson.health |> should equal 58
 
 [<Fact>]
 let ``A person can't be damaged past zero health`` () =
   let person = Person.empty
-  let hurtPerson = person |> takeDamage 999 
+  let hurtPerson = person |> Play.takeDamage 999 
   hurtPerson.health |> should equal 0
 
 [<Fact>]
 let ``When a person's health is zero they are dead`` () =
   let person = Person.empty
-  let hurtPerson = person |> takeDamage 100 
+  let hurtPerson = person |> Play.takeDamage 100 
   hurtPerson.health |> should equal 0
   hurtPerson.isDead |> should equal true

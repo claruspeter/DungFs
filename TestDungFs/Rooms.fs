@@ -19,5 +19,5 @@ let ``A room may have gold in it`` () =
 
 [<Fact>]
 let ``A room may have people in it`` () =
-  let crowdedRoom = {room with people = [Person.empty]}
-  crowdedRoom.people.Length |> should equal 1
+  let crowdedRoom = {room with inhabitant = Some Person.empty}
+  crowdedRoom.inhabitant |> shouldNotEqual None
