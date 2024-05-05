@@ -16,6 +16,7 @@ type Room ={
   inhabitant: Person option
 } with 
   static member empty exits = {Room.exits = exits; gold=0; inhabitant = None}
+  member this.exitString = this.exits |> List.map (fun x -> x.ToString()) |> fun x -> String.Join(",", x)
 
 type Dungeon = {
   player: Person
