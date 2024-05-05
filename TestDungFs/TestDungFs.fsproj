@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="People.fs" />
     <Compile Include="Rooms.fs" />
+    <Compile Include="Activities.fs" />
     <Compile Include="GamePlay.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

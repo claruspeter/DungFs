@@ -27,16 +27,22 @@ let view model =
   printfn "%s" model.message
   printfn "==============================================================="
 
-  printfn "   [Q]uit - [P]ickup Gold - Move %s - [A]ttack" (model.here.exitString |> Seq.map (sprintf "[%c]") |> fun x -> String.Join("", x))
+  model 
+  |> availableActivities
+  |> Seq.map (fun a -> a.label)
+  |> fun x -> String.Join(" - ", x)
+  |> printfn "   %s"
 
   model
 
 let update (dung:Dungeon) (ch:char) : Dungeon =
   dung 
-  |>  match ch with 
-      | 'p' -> pickupGold
-      | 'a' -> attack
-      | _ -> id
+  |> availableActivities
+  |> Seq.tryFind (fun x -> x.command = ch)
+  |>  function
+      | None -> dung
+      | Some activity -> dung |> activity.go
+
 
 
 let gameLoop (initialModel:Dungeon) =
@@ -45,7 +51,6 @@ let gameLoop (initialModel:Dungeon) =
   |> Seq.initInfinite
   |> Seq.takeWhile (fun x -> x <> 'q')
   |> Seq.fold (fun model x -> update model x |> view ) initialModel
-
 
 // Main //
 enterDungeon(standardDice)
