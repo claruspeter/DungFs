@@ -1,39 +1,20 @@
 ﻿namespace DungFs
 open System
 
-type Person = {
-  health: int
-  gold: int
-} with 
-  static member empty = { health = 100; gold = 0}
-  member this.isDead = this.health <= 0
-
-type Direction = N | E | S | W
-
-type Room ={
-  exits: Direction list
-  gold: int
-  inhabitant: Person option
-} with 
-  static member empty exits = {Room.exits = exits; gold=0; inhabitant = None}
-  member this.exitString = this.exits |> List.map (fun x -> x.ToString()) |> fun x -> String.Join(",", x)
-
 type Dungeon = {
   player: Person
   here: Room
   message: string
   dice: int -> int
+  gameOver: bool
 }
 
 module Builder = 
   let withInhabitant person dungeon =
     {
       dungeon with 
-        here = {
-          dungeon.here with inhabitant = Some person
-        }
+        here = dungeon.here |> Rooms.withInhabitant person
     }
-
 
 module Play =
   let private R = Random()
@@ -63,7 +44,7 @@ module Play =
       go = fun dungeon ->
         {
           dungeon with 
-            message = "You lay down and quietly wait for death to take you"
+            message = "You lay down and quietly die"
         }
     }
 
@@ -109,40 +90,51 @@ module Play =
                   message = $"You attack and kill the creature"
             }
     }
-  
+
+  let private move direction dungeon =
+    match dungeon.here.exits |> List.contains direction with 
+    | false -> {dungeon with message = $"Unable to move ${direction}"}
+    | true -> 
+      let newRoom = Rooms.generateRoomTo direction
+      {
+        dungeon with 
+          here = newRoom
+          message = $"You go {direction} into {newRoom.name}"
+      }
+
   let goNorth = 
     {
       name = "Go North"
       command = 'n'
-      go = id
+      go = move North
     }
   let goEast = 
     {
       name = "Go East"
       command = 'e'
-      go = id
+      go = move East
     }
   let goSouth = 
     {
       name = "Go South"
       command = 's'
-      go = id
+      go = move South
     }  
   let goWest = 
     {
       name = "Go West"
       command = 'w'
-      go = id
+      go = move West
     }
 
   let availableActivities dungeon =
     seq{
       yield quit
       if dungeon.here.gold > 0 then yield pickupGold
-      if dungeon.here.exits |> Seq.contains N then yield goNorth
-      if dungeon.here.exits |> Seq.contains E then yield goEast
-      if dungeon.here.exits |> Seq.contains W then yield goWest
-      if dungeon.here.exits |> Seq.contains S then yield goSouth
+      if dungeon.here.exits |> Seq.contains North then yield goNorth
+      if dungeon.here.exits |> Seq.contains East then yield goEast
+      if dungeon.here.exits |> Seq.contains West then yield goWest
+      if dungeon.here.exits |> Seq.contains South then yield goSouth
     }
 
   let standardDice size = R.Next(size) + 1
@@ -150,7 +142,8 @@ module Play =
   let enterDungeon dice =
     {
       player = Person.empty
-      here = {exits = [ N ]; gold = 3; inhabitant = None}
+      here = {name = "the Entrance"; exits = [ North ]; gold = 3; inhabitant = None}
       dice = dice
-      message = "You enter a new room. Choose what to do next wisely"
+      message = "You walk into the Entrance. Choose what to do next wisely"
+      gameOver = false
     }

@@ -6,7 +6,7 @@ open FsUnit.Xunit
 open FsUnitTyped
 open DungFs
 
-let room = Room.empty [N ; W]
+let room = Room.empty [North ; West]
 
 [<Fact>]
 let ``A room may have exits`` () =

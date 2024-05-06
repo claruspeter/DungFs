@@ -1,6 +1,7 @@
 ﻿open System
 open DungFs
 open DungFs.Play
+open System.Collections.Generic
 
 
 let view model =
@@ -14,7 +15,7 @@ let view model =
   printfn " Health: %d%%" model.player.health
   printfn " Wealth: %d gold" model.player.gold
   printfn ""
-  printfn "Room"
+  printfn "Room - %s" model.here.name
   printfn "---------------------------------------------------------------"
   match model.here.inhabitant with 
   | None -> printfn " No-one is in the room"
@@ -26,13 +27,11 @@ let view model =
   printfn "==============================================================="
   printfn "%s" model.message
   printfn "==============================================================="
-
   model 
-  |> availableActivities
-  |> Seq.map (fun a -> a.label)
-  |> fun x -> String.Join(" - ", x)
-  |> printfn "   %s"
-
+    |> availableActivities
+    |> Seq.map (fun a -> a.label)
+    |> fun x -> String.Join(" - ", x)
+    |> printfn "   %s"
   model
 
 let update (dung:Dungeon) (ch:char) : Dungeon =
@@ -43,19 +42,30 @@ let update (dung:Dungeon) (ch:char) : Dungeon =
       | None -> dung
       | Some activity -> dung |> activity.go
 
+let takeWhileInclusive predicate (s:seq<_>) = 
+  let rec loop (en:IEnumerator<_>) = 
+    seq {
+      if en.MoveNext() then
+        yield en.Current
+      if predicate en.Current then
+        yield! loop en 
+    }
+  seq { 
+    use en = s.GetEnumerator()
+    yield! loop en
+  }
+
 
 
 let gameLoop (initialModel:Dungeon) =
   view initialModel |> ignore
   (fun _ -> Console.ReadKey(true).KeyChar |> Char.ToLowerInvariant )
   |> Seq.initInfinite
-  |> Seq.takeWhile (fun x -> x <> 'q')
+  |> takeWhileInclusive (fun x -> x <> 'q')
   |> Seq.fold (fun model x -> update model x |> view ) initialModel
 
 // Main //
 enterDungeon(standardDice)
 |> gameLoop
 |> ignore
-
-
 

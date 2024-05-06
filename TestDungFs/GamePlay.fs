@@ -23,7 +23,7 @@ let ``Game starts with a valid room`` () =
 
 [<Fact>]
 let ``Game starts with a 'entered room' message'`` () =
-  dungeon.message |> should startWith "You enter a new room"
+  dungeon.message |> should startWith "You walk into the Entrance"
 
 
 [<Fact>]
@@ -71,3 +71,13 @@ let ``When player kills an inhabitant then the message says that you killed the 
   let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 2; gold = 20}
   let updated = roomWithMonster |> Play.attack.go
   updated.message |> should equal "You attack and kill the creature"
+
+[<Fact>]
+let ``Player can move into another room`` () =
+  let updated = dungeon |> Play.goNorth.go
+  updated.here.name |> shouldNotEqual "Entrance"
+
+[<Fact>]
+let ``When move into another room the message reflects the movement`` () =
+  let updated = dungeon |> Play.goNorth.go
+  updated.message |> should startWith "You go North into "
