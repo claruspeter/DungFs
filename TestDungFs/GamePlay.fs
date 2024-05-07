@@ -6,7 +6,8 @@ open FsUnit.Xunit
 open FsUnitTyped
 open DungFs
 
-let fixedDice _ = 5
+let fixedDice = { rollFunction = function  _ -> 1 }
+
 let dungeon = Play.enterDungeon fixedDice
 
 [<Fact>]
@@ -41,13 +42,13 @@ let ``When player picks up gold the message says how much`` () =
 let ``Player can attack person in room`` () =
   let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 20}
   let updated = roomWithMonster |> Play.attack.go
-  updated.here.inhabitant.Value.health |> should equal 15
+  updated.here.inhabitant.Value.health |> should equal 19
 
 [<Fact>]
 let ``When player attacks the message says how much damage is inflicted`` () =
   let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 20}
   let updated = roomWithMonster |> Play.attack.go
-  updated.message |> should equal "You attack and cause 5 damage"
+  updated.message |> should equal "You attack and cause 1 damage"
 
 [<Fact>]
 let ``When player attacks and the room is uninhabited the message says there is no-one to attack`` () =
@@ -62,13 +63,13 @@ let ``When player attacks and the inhabitant is dead the message says it is dead
 
 [<Fact>]
 let ``When player kills an inhabitant then the inhabitant's gold is added to the room`` () =
-  let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 2; gold = 20}
+  let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 1; gold = 20}
   let updated = roomWithMonster |> Play.attack.go
   updated.here.gold |> should equal 23
 
 [<Fact>]
 let ``When player kills an inhabitant then the message says that you killed the inhabitant`` () =
-  let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 2; gold = 20}
+  let roomWithMonster = dungeon |> Builder.withInhabitant {Person.empty with health = 1; gold = 20}
   let updated = roomWithMonster |> Play.attack.go
   updated.message |> should equal "You attack and kill the creature"
 

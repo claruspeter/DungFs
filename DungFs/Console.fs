@@ -21,7 +21,7 @@ let private view model =
   match model.here.inhabitant with 
   | None -> printfn " No-one is in the room"
   | Some monster -> 
-    printfn " Monster (%A)" (if monster.isDead then "dead" else monster.health.ToString())
+    printfn " %s (%s)" monster.name (if monster.isDead then "dead" else monster.health.ToString())
   printfn " Gold: %d gold" model.here.gold
   printfn " Exits: %s" model.here.exitString
   printfn ""

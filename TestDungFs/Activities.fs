@@ -7,7 +7,7 @@ open FsUnitTyped
 open DungFs
 open DungFs.Play
 
-let fixedDice _ = 5
+let fixedDice = {rollFunction = fun  _ -> 5}
 let dungeon = Play.enterDungeon fixedDice
 
 [<Fact>]

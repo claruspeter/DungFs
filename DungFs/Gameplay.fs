@@ -9,6 +9,9 @@ let private R = Random()
 let increaseGold amount (person:Person) =
   { person with gold = person.gold + amount }
 
+let dropGold (person:Person) =
+  { person with gold = 0 }
+
 let takeDamage amount (person:Person) =
   { person with health = Math.Max(0, person.health - amount) }
 
@@ -58,7 +61,7 @@ let attack =
       match dungeon.here.inhabitant with 
       | None -> {dungeon with message = "There is no one in the room"}
       | Some monster -> 
-        let damage = dungeon.dice(20)
+        let damage = dungeon.dice.roll(20)
         match monster.isDead, monster.health <= damage  with 
         | true, _ -> {dungeon with message="You attack a dead body"}
         | false, false ->
@@ -72,7 +75,7 @@ let attack =
               dungeon with 
                 here = { 
                   dungeon.here with 
-                    inhabitant = monster |> takeDamage damage |> Some 
+                    inhabitant = monster |> takeDamage damage |> dropGold |> Some 
                     gold = dungeon.here.gold + monster.gold
                 }
                 message = $"You attack and kill the creature"
@@ -83,7 +86,7 @@ let private move direction dungeon =
   match dungeon.here.exits |> List.contains direction with 
   | false -> {dungeon with message = $"Unable to move ${direction}"}
   | true -> 
-    let newRoom = Rooms.generateRoomTo direction
+    let newRoom = Rooms.generateRoomTo dungeon.dice direction
     {
       dungeon with 
         here = newRoom
@@ -119,13 +122,14 @@ let availableActivities dungeon =
   seq{
     yield quit
     if dungeon.here.gold > 0 then yield pickupGold
+    if dungeon.here.inhabitant.IsSome then yield attack
     if dungeon.here.exits |> Seq.contains North then yield goNorth
     if dungeon.here.exits |> Seq.contains East then yield goEast
     if dungeon.here.exits |> Seq.contains West then yield goWest
     if dungeon.here.exits |> Seq.contains South then yield goSouth
   }
 
-let standardDice size = R.Next(size) + 1
+let standardDice = {rollFunction = fun size -> R.Next(size) + 1}
 
 let enterDungeon dice =
   {

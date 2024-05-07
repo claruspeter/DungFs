@@ -5,7 +5,7 @@ type Dungeon = {
   player: Person
   here: Room
   message: string
-  dice: int -> int
+  dice: Dice
   gameOver: bool
 }
 

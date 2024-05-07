@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Accessories.fs" />
     <Compile Include="Person.fs" />
+    <Compile Include="data.fs" />
     <Compile Include="Room.fs" />
     <Compile Include="Dungeon.fs" />
     <Compile Include="Gameplay.fs" />
     <Compile Include="Mvu.fs" />
     <Compile Include="Console.fs" />
     <Compile Include="Program.fs" />
+
   </ItemGroup>
 
 </Project>
