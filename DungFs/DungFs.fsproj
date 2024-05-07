@@ -9,7 +9,10 @@
   <ItemGroup>
     <Compile Include="Person.fs" />
     <Compile Include="Room.fs" />
-    <Compile Include="Library.fs" />
+    <Compile Include="Dungeon.fs" />
+    <Compile Include="Gameplay.fs" />
+    <Compile Include="Mvu.fs" />
+    <Compile Include="Console.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
