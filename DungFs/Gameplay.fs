@@ -15,6 +15,36 @@ let dropGold (person:Person) =
 let takeDamage amount (person:Person) =
   { person with health = Math.Max(0, person.health - amount) }
 
+let private defend dungeon =
+  let damage = dungeon.dice.roll(20)
+  match dungeon.here.inhabitant, dungeon.player.isDead, dungeon.player.health <= damage  with 
+  | None, _, _ -> dungeon
+  | Some monster, _, _  when monster.isDead -> dungeon
+  | Some monster, true, _ -> dungeon |> Builder.msg $"The {monster.name} wails on your dead body"
+  | Some monster, false, false ->
+    {
+      dungeon with 
+        player = {dungeon.player with health = dungeon.player.health - damage}
+    }
+    |> Builder.msg  $"{monster.name} attacks and causes you {damage} damage"
+  | Some monster, false, true ->
+    {
+        dungeon with 
+          player = {dungeon.player with health = 0; gold = 0}
+          gameOver = true
+          here = { 
+            dungeon.here with 
+              gold = dungeon.here.gold + dungeon.player.gold
+          }
+    }
+    |> Builder.msg $"{monster.name} kills you.  Your mouldy bones will lie in this room forever"
+
+let private preemptAttack dungeon =
+  if dungeon.here.inhabitant.IsSome && dungeon.dice.roll(20) > 10 then 
+    dungeon |> defend
+  else
+    dungeon
+
 ///<summary>A possible activity that a player can do</summary>
 type Activity = {
   name: string
@@ -35,8 +65,8 @@ let quit =
       {
         dungeon with 
           gameOver = true
-          message = "You lay down and quietly die"
       }
+      |> Builder.msg "You lay down and quietly die"
   }
 
 let pickupGold = 
@@ -48,8 +78,9 @@ let pickupGold =
         dungeon with 
           player = dungeon.player |> increaseGold dungeon.here.gold
           here = {dungeon.here with gold = 0}
-          message = $"You pick up {dungeon.here.gold} gold"
       }
+      |> Builder.msg $"You pick up {dungeon.here.gold} gold"
+
   }
 
 
@@ -59,17 +90,18 @@ let attack =
     command = 'a'
     go = fun (dungeon: Dungeon) ->
       match dungeon.here.inhabitant with 
-      | None -> {dungeon with message = "There is no one in the room"}
+      | None -> dungeon |> Builder.msg "There is no one in the room"
       | Some monster -> 
         let damage = dungeon.dice.roll(20)
         match monster.isDead, monster.health <= damage  with 
-        | true, _ -> {dungeon with message="You attack a dead body"}
+        | true, _ -> dungeon |> Builder.msg "You attack a dead body"
         | false, false ->
           {
               dungeon with 
                 here = { dungeon.here with inhabitant = monster |> takeDamage damage |> Some }
-                message = $"You attack and cause {damage} damage"
-          }
+          } 
+          |> Builder.msg  $"You attack and cause {damage} damage"
+          |> defend
         | false, true ->
           {
               dungeon with 
@@ -78,20 +110,21 @@ let attack =
                     inhabitant = monster |> takeDamage damage |> dropGold |> Some 
                     gold = dungeon.here.gold + monster.gold
                 }
-                message = $"You attack and kill the creature"
           }
+          |> Builder.msg  $"You attack and kill the creature"
   }
 
 let private move direction dungeon =
   match dungeon.here.exits |> List.contains direction with 
-  | false -> {dungeon with message = $"Unable to move ${direction}"}
+  | false -> dungeon |> Builder.msg  $"Unable to move ${direction}"
   | true -> 
     let newRoom = Rooms.generateRoomTo dungeon.dice direction
     {
       dungeon with 
         here = newRoom
-        message = $"You go {direction} into {newRoom.name}"
     }
+    |> Builder.msg $"You go {direction} into the {newRoom.name}"
+    |> preemptAttack
 
 let goNorth = 
   {
@@ -136,6 +169,6 @@ let enterDungeon dice =
     player = Person.empty
     here = {name = "the Entrance"; exits = [ North ]; gold = 3; inhabitant = None}
     dice = dice
-    message = "You walk into the Entrance. Choose what to do next wisely"
+    messages = ["You walk into the Entrance. Choose what to do next wisely"]
     gameOver = false
   }

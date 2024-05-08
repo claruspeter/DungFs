@@ -26,7 +26,9 @@ let private view model =
   printfn " Exits: %s" model.here.exitString
   printfn ""
   printfn "==============================================================="
-  printfn "%s" model.message
+  model.messages 
+  |> Seq.truncate 3
+  |> Seq.iter (printfn "> %s")
   printfn "==============================================================="
   model 
     |> availableActivities

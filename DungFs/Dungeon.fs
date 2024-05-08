@@ -4,10 +4,11 @@ open System
 type Dungeon = {
   player: Person
   here: Room
-  message: string
+  messages: string list
   dice: Dice
   gameOver: bool
-}
+}with 
+  member this.message = this.messages.Head
 
 module Builder = 
   let withInhabitant person dungeon =
@@ -15,3 +16,6 @@ module Builder =
       dungeon with 
         here = dungeon.here |> Rooms.withInhabitant person
     }
+  
+  let msg m dungeon =
+    { dungeon with messages = [m] @ dungeon.messages}
