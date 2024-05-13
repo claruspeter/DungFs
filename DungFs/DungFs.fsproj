@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
@@ -14,9 +13,6 @@
     <Compile Include="Dungeon.fs" />
     <Compile Include="Gameplay.fs" />
     <Compile Include="Mvu.fs" />
-    <Compile Include="Console.fs" />
-    <Compile Include="Program.fs" />
-
   </ItemGroup>
 
 </Project>

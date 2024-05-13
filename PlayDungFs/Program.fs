@@ -5,4 +5,3 @@ Play.standardDice
 |> Play.enterDungeon
 |> DungFs.Console.gameLoop.start
 |> ignore
-

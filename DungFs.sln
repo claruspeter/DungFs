@@ -7,6 +7,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DungFs", "DungFs\DungFs.fsp
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TestDungFs", "TestDungFs\TestDungFs.fsproj", "{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PlayDungFs", "PlayDungFs\PlayDungFs.fsproj", "{D2EC10AB-8FDE-4702-BA5A-0977E9983E93}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DungFable", "DungFable\DungFable.fsproj", "{407A01A8-3485-457A-927E-FF17D1C0D315}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECC35C1C-255B-4CA0-8E77-7925F9DF197C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2EC10AB-8FDE-4702-BA5A-0977E9983E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2EC10AB-8FDE-4702-BA5A-0977E9983E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2EC10AB-8FDE-4702-BA5A-0977E9983E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2EC10AB-8FDE-4702-BA5A-0977E9983E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407A01A8-3485-457A-927E-FF17D1C0D315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407A01A8-3485-457A-927E-FF17D1C0D315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407A01A8-3485-457A-927E-FF17D1C0D315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407A01A8-3485-457A-927E-FF17D1C0D315}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
