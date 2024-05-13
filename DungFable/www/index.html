@@ -1,6 +1,30 @@
 <html>
+  <head>
+    <style>
+      label{
+        font-style: italic;
+        display: inline-block;
+        width: 4em;
+      }
+
+    </style>
+  </head>
   <body>
     <h1>Dungeon Fs Fable</h1>
+    <section>
+      <h2>Player</h2>
+      <p><label>Health</label> <span id="player_health"></span>%</p>
+      <p><label>Wealth</label> <span id="player_wealth"></span> gold</p>
+    </section>
+    <section>
+      <h2>Room - <span id="room_name"></span></h2>
+      <p><span id="room_inhabitant"></span></p>
+      <p><label>Gold</label> <span id="room_wealth"></span> gold</p>
+      <p><label>Exits</label> <span id="room_exits"></span></p>
+    </section>
+    <section id="activities">
+
+    </section>
     <ul id="messages"></ul>
     <script src="js/Program.js" type="module"></script>
   </body>

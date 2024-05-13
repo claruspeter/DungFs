@@ -152,15 +152,18 @@ let goWest =
   }
 
 let availableActivities dungeon =
-  seq{
-    yield quit
-    if dungeon.here.gold > 0 then yield pickupGold
-    if dungeon.here.inhabitant.IsSome then yield attack
-    if dungeon.here.exits |> Seq.contains North then yield goNorth
-    if dungeon.here.exits |> Seq.contains East then yield goEast
-    if dungeon.here.exits |> Seq.contains West then yield goWest
-    if dungeon.here.exits |> Seq.contains South then yield goSouth
-  }
+  match dungeon.player.isDead with 
+  | true -> seq []
+  | false ->
+    seq{
+      yield quit
+      if dungeon.here.gold > 0 then yield pickupGold
+      if dungeon.here.inhabitant.IsSome then yield attack
+      if dungeon.here.exits |> Seq.contains North then yield goNorth
+      if dungeon.here.exits |> Seq.contains East then yield goEast
+      if dungeon.here.exits |> Seq.contains West then yield goWest
+      if dungeon.here.exits |> Seq.contains South then yield goSouth
+    }
 
 let standardDice = {rollFunction = fun size -> R.Next(size) + 1}
 
